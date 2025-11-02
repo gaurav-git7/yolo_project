@@ -1,7 +1,8 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """Utils to interact with the Triton Inference Server."""
 
-import typing
+from __future__ import annotations
+
 from urllib.parse import urlparse
 
 import torch
@@ -29,7 +30,7 @@ class TritonRemoteModel:
             self.model_name = model_repository.models[0].name
             self.metadata = self.client.get_model_metadata(self.model_name, as_json=True)
 
-            def create_input_placeholders() -> typing.List[InferInput]:
+            def create_input_placeholders() -> list[InferInput]:
                 return [
                     InferInput(i["name"], [int(s) for s in i["shape"]], i["datatype"]) for i in self.metadata["inputs"]
                 ]
@@ -42,7 +43,7 @@ class TritonRemoteModel:
             self.model_name = model_repository[0]["name"]
             self.metadata = self.client.get_model_metadata(self.model_name)
 
-            def create_input_placeholders() -> typing.List[InferInput]:
+            def create_input_placeholders() -> list[InferInput]:
                 return [
                     InferInput(i["name"], [int(s) for s in i["shape"]], i["datatype"]) for i in self.metadata["inputs"]
                 ]
@@ -54,7 +55,7 @@ class TritonRemoteModel:
         """Returns the model runtime."""
         return self.metadata.get("backend", self.metadata.get("platform"))
 
-    def __call__(self, *args, **kwargs) -> typing.Union[torch.Tensor, typing.Tuple[torch.Tensor, ...]]:
+    def __call__(self, *args, **kwargs) -> torch.Tensor | tuple[torch.Tensor, ...]:
         """
         Invokes the model.
 

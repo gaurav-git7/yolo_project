@@ -25,6 +25,7 @@ pip install -r requirements.txt
 ```
 
 Main dependencies:
+
 - PyTorch
 - OpenCV (cv2)
 - YOLOv5
@@ -32,16 +33,19 @@ Main dependencies:
 ## Usage
 
 ### Real-time Detection (Webcam)
+
 ```bash
 python filtered.py
 ```
 
 ### Video File Detection
+
 ```bash
 python sample_video.py
 ```
 
 ### Controls
+
 - `q` - Quit the application
 - `p` - Pause/Resume detection
 
@@ -57,6 +61,7 @@ To train your own model, use the modified `train.py` script with custom hyperpar
 ## Configuration
 
 Key parameters in the detection scripts:
+
 - `model.conf = 0.25` - Model confidence threshold
 - `conf > 0.4` - Detection filtering threshold
 - `area > 1000` - Minimum bounding box area filter
