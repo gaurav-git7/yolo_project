@@ -3,16 +3,13 @@ import torch
 
 # Load your custom YOLOv5n model
 model = torch.hub.load(
-    r"C:\College_Projects\Yolo\yolov5",  
-    "custom", 
-    path=r"yolov5\runs\train\yolo-batch4\weights\best.pt",  
-    source="local"
+    r"C:\College_Projects\Yolo\yolov5", "custom", path=r"yolov5\runs\train\yolo-batch4\weights\best.pt", source="local"
 )
 model.conf = 0.25  # Confidence threshold
 
 # Load video
 cap = cv2.VideoCapture("yolov5/../Videos/video3.mp4")
-#cap = cv2.VideoCapture(1)
+# cap = cv2.VideoCapture(1)
 if not cap.isOpened():
     print("❌ Error: Could not open video.")
     exit()
@@ -43,20 +40,26 @@ while True:
                     people_count += 1
                     cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
                     label = f"{conf:.2f}"
-                    cv2.putText(frame, label, (int(x1), int(y1) - 10),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+                    cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
 
         # Get frame dimensions for centering the text
         frame_height, frame_width = frame.shape[:2]
-        cv2.putText(frame, f"People Count: {people_count}", (frame_width // 6, frame_height // 4),
-                    cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 255, 0), 6)
+        cv2.putText(
+            frame,
+            f"People Count: {people_count}",
+            (frame_width // 6, frame_height // 4),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            3,
+            (0, 255, 0),
+            6,
+        )
 
         cv2.imshow("People Detection", frame)
 
     key = cv2.waitKey(10) & 0xFF
-    if key == ord('q'):
+    if key == ord("q"):
         break
-    elif key == ord('p'):
+    elif key == ord("p"):
         paused = not paused
 
 cap.release()
