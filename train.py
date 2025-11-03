@@ -409,7 +409,7 @@ def train(hyp, opt, device, callbacks):
                     imgs = nn.functional.interpolate(imgs, size=ns, mode="bilinear", align_corners=False)
 
             # Forward
-            with torch.amp.autocast(device_type='cuda', enabled=amp):
+            with torch.amp.autocast(device_type="cuda", enabled=amp):
                 pred = model(imgs)  # forward
                 loss, loss_items = compute_loss(pred, targets.to(device))  # loss scaled by batch_size
                 if RANK != -1:
@@ -794,7 +794,7 @@ def main(opt, callbacks=Callbacks()):
         elif pop_size > 1:
             population = [generate_individual(gene_ranges, len(hyp_GA)) for _ in range(pop_size - len(initial_values))]
             for initial_value in initial_values:
-                population = [initial_value] + population
+                population = [initial_value, *population]
 
         # Run the genetic algorithm for a fixed number of generations
         list_keys = list(hyp_GA.keys())
@@ -803,7 +803,7 @@ def main(opt, callbacks=Callbacks()):
                 save_dict = {}
                 for i in range(len(population)):
                     little_dict = {list_keys[j]: float(population[i][j]) for j in range(len(population[i]))}
-                    save_dict[f"gen{str(generation)}number{str(i)}"] = little_dict
+                    save_dict[f"gen{generation!s}number{i!s}"] = little_dict
 
                 with open(save_dir / "evolve_population.yaml", "w") as outfile:
                     yaml.dump(save_dict, outfile, default_flow_style=False)
